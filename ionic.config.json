@@ -1,0 +1,8 @@
+{
+  "name": "opikahTb18",
+  "app_id": "",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}
