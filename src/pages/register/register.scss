@@ -1,0 +1,26 @@
+page-register {
+    .bg-style {
+        background: #222;
+    }
+    #dark-button {
+        background: #616161;
+    }
+    #ion-margin {
+        margin: 10%;
+    }
+    .register {
+        color: white;
+        span {
+            text-decoration: underline;
+        }
+    }
+    form {
+        ion-item {
+            background: black;
+            color: white;
+        }
+    }
+    .toolbar-md-primary .toolbar-background-md {
+        background: #222!important;
+    }
+}

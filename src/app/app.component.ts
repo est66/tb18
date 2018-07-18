@@ -1,10 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, MenuController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import * as firebase from 'firebase/app';
 
-import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
+import { TabsPage } from '../pages/tabs/tabs';
+import { LoginPage } from '../pages/login/login';
+import { AuthProvider } from '../providers/auth/auth';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @Component({
   templateUrl: 'app.html'
@@ -12,19 +15,28 @@ import { ListPage } from '../pages/list/list';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = HomePage;
+  rootPage: any = TabsPage;
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(
+    public platform: Platform,
+    public menu: MenuController,
+    public statusBar: StatusBar,
+    public splashScreen: SplashScreen,
+    public auth: AuthProvider,
+    private afAuth: AngularFireAuth
+  ) {
+
+    // User is redirected to the right page depend of its situation
+    let unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+      // If there's no user logged in send him to the LoginPage
+      if (user == null) this.rootPage = LoginPage;
+      // Else go to HomePage
+      else this.rootPage = TabsPage;
+    });
     this.initializeApp();
-
-    // used for an example of ngFor and navigation
-    this.pages = [
-      { title: 'Home', component: HomePage },
-      { title: 'List', component: ListPage }
-    ];
-
+    
   }
 
   initializeApp() {
@@ -40,5 +52,30 @@ export class MyApp {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
+  }
+
+  isFirstTime(userId) {
+    var db = firebase.firestore();
+    var docRef = db.collection("users").doc(userId);
+    docRef.get().then(function (doc) {
+
+      if (doc.exists && doc.data().prenom == undefined) {
+
+        console.log("Document data:", doc.data().prenom);
+
+        return true;
+
+      } else {
+        console.log("No such document!");
+        return false;
+      }
+    }).catch(function (error) {
+      console.log("Error getting document:", error);
+    }
+
+    );
+    console.log(docRef);
+    return docRef;
+
   }
 }

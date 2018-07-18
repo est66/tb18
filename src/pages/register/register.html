@@ -1,0 +1,17 @@
+<ion-content padding class="bg-style">
+
+    <div style="text-align:center;padding-top:30px;"><span style="font-family: Aressence; color:white; font-size:100px">Opikah</span></div>;
+    <div id="ion-margin">
+        <ion-item>
+
+            <ion-input placeholder="Email" type="text" [(ngModel)]="user.email"></ion-input>
+        </ion-item>
+        <br>
+        <ion-item>
+
+            <ion-input placeholder="Password" type="password" [(ngModel)]="user.password"></ion-input>
+        </ion-item>
+        <br>
+        <button ion-button full (click)="register(user)" id="dark-button">Register</button>
+    </div>
+</ion-content>

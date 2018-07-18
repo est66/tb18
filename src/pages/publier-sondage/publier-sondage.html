@@ -1,0 +1,189 @@
+<ion-header>
+
+    <ion-navbar color="primary" class="nav-bar">
+        <ion-title>Publier Sondage</ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <!--
+    <div>Sexe</div>
+    <div>Age</div>
+    <div>Statut Prof</div>
+    <div>Localisation - Canton</div>
+    <div>Langues</div>
+    -->
+
+    <ion-grid>
+        <!--LOCALISATION-->
+        <!--PAYS-->
+        <div class="separateur-categorie">Localisation</div>
+        <ion-row>
+            <ion-col>
+                <ion-list>
+                    <ion-item>
+                        <ion-label>Pays</ion-label>
+                        <ion-select [(ngModel)]="filter.country" cancelText="Annuler" okText="Valider" (ionChange)='targetCount()'>
+                            <ion-option value="CH" selected>Suisse</ion-option>
+
+                        </ion-select>
+                    </ion-item>
+                </ion-list>
+            </ion-col>
+        </ion-row>
+        <!--LANGUE-->
+        <ion-row>
+            <ion-col>
+                <ion-list>
+                    <ion-item>
+                        <ion-label>Langue</ion-label>
+                        <ion-select [(ngModel)]="filter.lang" cancelText="Annuler" okText="Valider" (ionChange)='targetCount()'>
+                            <ion-option value="fra" selected>Francais</ion-option>
+                            <ion-option value="all">Allemand</ion-option>
+                            <ion-option value="ang">Anglais</ion-option>
+                        </ion-select>
+                    </ion-item>
+                </ion-list>
+            </ion-col>
+        </ion-row>
+        <!--FILTER CHOICE-->
+        <div class="separateur-categorie">Caractéristique du sondage</div>
+        <ion-row>
+            <ion-col>
+                <ion-list>
+                    <ion-item>
+                        <ion-label>Filtre</ion-label>
+                        <ion-select [(ngModel)]="filterChoice" cancelText="Annuler" okText="Valider" (ionChange)='targetCount()'>
+                            <ion-option value="aucun" selected>Aucun</ion-option>
+                            <ion-option value="age">Age</ion-option>
+                            <ion-option value="sexe">Sexe</ion-option>
+                            <ion-option value="activity">Activité</ion-option>
+                        </ion-select>
+                    </ion-item>
+                </ion-list>
+
+            </ion-col>
+        </ion-row>
+        <!--SEXE-->
+        <div *ngIf="filterChoice == 'sexe'">
+            <div class="separateur-categorie">Sexe</div>
+            <ion-row>
+                <ion-col>
+                    <ion-list>
+                        <ion-item>
+                            <ion-label>Sexe</ion-label>
+                            <ion-select [(ngModel)]="filter.sexe" cancelText="Annuler" okText="Valider" (ionChange)='targetCount()'>
+                                <ion-option value="femme">F</ion-option>
+                                <ion-option value="homme">H</ion-option>
+                            </ion-select>
+                        </ion-item>
+                    </ion-list>
+
+                </ion-col>
+            </ion-row>
+        </div>
+        <!--AGE-->
+        <div *ngIf="filterChoice == 'age'">
+            <div class="separateur-categorie">Age</div>
+
+            <ion-row>
+                <ion-col col-10>
+
+                    <ion-badge item-end color="primary">{{filter.ages.lower}}</ion-badge>
+
+                </ion-col>
+                <ion-col>
+                    <ion-badge item-end color="primary">{{filter.ages.upper}}</ion-badge>
+
+                </ion-col>
+            </ion-row>
+
+            <ion-row>
+                <ion-col>
+                    <ion-list>
+                        <ion-item>
+                            <ion-label>Age</ion-label>
+                            <ion-range dualKnobs="true" [(ngModel)]="filter.ages" min="14" max="75" step="2" snaps="true" (ionChange)='targetCount()' debounce="2000">
+                                <ion-label range-left>min</ion-label>
+                                <ion-label range-right>max</ion-label>
+                            </ion-range>
+
+                        </ion-item>
+                    </ion-list>
+                </ion-col>
+
+            </ion-row>
+
+
+        </div>
+        <!--CATEGORIE PROFESIONEL-->
+        <div *ngIf="filterChoice == 'activity'">
+            <div class="separateur-categorie">Activité</div>
+            <ion-row>
+                <ion-col col-12>
+                    <ion-list>
+                        <ion-item>
+                            <ion-label>Activité</ion-label>
+                            <ion-select [(ngModel)]="filter.activity" cancelText="Annuler" okText="Valider" (ionChange)='targetCount()'>
+                                <ion-option value="etudiant" selected>Etudiant</ion-option>
+                                <ion-option value="actif">Actif</ion-option>
+                                <ion-option value="autre">Autre</ion-option>
+                            </ion-select>
+                        </ion-item>
+                    </ion-list>
+
+                </ion-col>
+            </ion-row>
+        </div>
+        <!--NOMBRE DE SONDé-->
+
+        <ion-row>
+            <ion-col>
+                <ion-list>
+                    <ion-item>
+                        <h1>NOMBRE MAX DE RÉPONSE </h1>               
+                        <h2>{{ (users | async)?.length }}</h2>
+                        <!--<div *ngFor="let user of users | async"><p>{{ user.uid }}</p></div>-->
+                    </ion-item>
+                </ion-list>
+            </ion-col>
+
+        </ion-row>
+        <!--CALCULE DU PRIX-->
+        <ion-row>
+            <ion-card>
+                <ion-card-content>
+                    <h1>PRIX</h1>
+                    <br>
+                    <!--CALCULE DU PRIX -->
+                    <div *ngIf="filterChoice == 'aucun'; else priceWithFilter">
+                        
+                        <h2>{{ numberOfQuestion*0.2*100}} <span class="opicoins">Opicoins</span>/réponse</h2>
+                    </div>
+                    <ng-template #priceWithFilter>
+                        <!--CALCULE DU PRIX SELON LA FORMULE DU RAPPORT (NOMBRE DE QUESTION & NOMBRE DE FILTRE-->
+                        <h2>{{ numberOfQuestion*0.2*1.2*100}} <span class="opicoins">Opicoins</span>/réponse</h2>
+                    </ng-template>
+
+                </ion-card-content>
+            </ion-card>
+        </ion-row>
+                <ion-row>
+                    <ion-col>
+                        <button ion-button block (click)="publier()">Publier</button>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col>
+                        vous disposez de  {{ (wallet | async)?.opicoins }} opicoins
+                    </ion-col>
+                </ion-row>
+    </ion-grid>
+    <!--
+    <button ion-button block (click)="targetCount()">Compter</button>
+     -->
+
+
+</ion-content>

@@ -1,0 +1,126 @@
+<!--HEADER-->
+<ion-header>
+    <ion-navbar color="primary" class="nav-bar">
+        <ion-title class="title">Profile</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-grid>
+        <!--IDENTITE-->
+        <div class="separateur-categorie">Identité</div>
+        <!--SEXE-->
+
+        <ion-row class="valid-data" id="sexe">
+            <ion-col col-12>
+                <ion-list>
+                    <ion-item>
+                        <ion-label stacked>Sexe</ion-label>
+
+                        <ion-select [(ngModel)]="userData.sexe">
+                            <ion-option value="femme">F</ion-option>
+                            <ion-option value="homme">H</ion-option>
+                        </ion-select>
+                    </ion-item>
+                </ion-list>
+
+            </ion-col>
+        </ion-row>
+        <!--PRENOM-->
+
+        <ion-row id="prenom">
+            <ion-col col-12>
+                <ion-item>
+                    <ion-label stacked>Prenom</ion-label>
+                    <ion-input [(ngModel)]="userData.prenom" type="text" placeholder="entrez votre prénom..."></ion-input>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <!--NOM-->
+        <ion-row id="nom">
+            <ion-col col-12>
+                <ion-item>
+                    <ion-label stacked>Nom</ion-label>
+                    <ion-input [(ngModel)]="userData.nom" type="text" placeholder="entrez votre nom..."></ion-input>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <!-- DATE DE NAISSANCE-->
+        <ion-row id="naissance">
+            <ion-col col-12>
+                <ion-item>
+                    <ion-label stacked>Naissance</ion-label>
+                    <ion-datetime [(ngModel)]="userData.naissance" displayFormat="DD/MM/YYYY"></ion-datetime>
+                </ion-item>
+
+            </ion-col>
+        </ion-row>
+
+
+
+
+
+        <!--CONTACT-->
+        <div class="separateur-categorie">Contact</div>
+        <!--TELEPHONE-->
+        <ion-row id="telephone">
+            <ion-col col-12>
+                <ion-item>
+                    <ion-label stacked>Téléphone</ion-label>
+                    <ion-input [(ngModel)]="userData.telephone" type="tel" placeholder="0768222317"></ion-input>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <!--ADRESSE-->
+        <!--RUE-->
+        <ion-row id="rue">
+            <ion-col col-12>
+                <ion-item>
+                    <ion-label stacked>Rue</ion-label>
+                    <ion-input [(ngModel)]="userData.rue" type="text" placeholder="Votre rue"></ion-input>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <!--NUMERO RUE-->
+        <ion-row id="rueNo">
+            <ion-col col-12>
+                <ion-item>
+                    <ion-label stacked>Numéro</ion-label>
+                    <ion-input [(ngModel)]="userData.rueNo" type="text" placeholder="Numéro de la rue"></ion-input>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <!--NPA-->
+        <ion-row id="npa">
+            <ion-col col-12>
+                <ion-item>
+                    <ion-label stacked>Code postale</ion-label>
+                    <ion-input [(ngModel)]="userData.npa" type="text" placeholder="Code postal"></ion-input>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <!--VILLE-->
+        <ion-row id="ville">
+            <ion-col col-12>
+                <ion-item>
+                    <ion-label stacked>Ville</ion-label>
+                    <ion-input [(ngModel)]="userData.ville" type="text" placeholder="Votre ville"></ion-input>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <!--CANTON-->
+        <ion-row id="canton">
+            <ion-col col-12>
+                <ion-item>
+                    <ion-label stacked>Canton</ion-label>
+                    <ion-input [(ngModel)]="userData.canton" type="text" placeholder="Votre canton"></ion-input>
+                </ion-item>
+                <br>
+                <button ion-button full (click)="validFirstPart(userData)" id="dark-button">Suivant</button>
+            </ion-col>
+        </ion-row>
+
+
+    </ion-grid>
+
+</ion-content>
