@@ -30,6 +30,7 @@ import { AuthProvider } from '../providers/auth/auth';
 import { UserProvider } from '../providers/user/user';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { LoginPage } from '../pages/login/login';
+import { ResponsesPage } from '../pages/responses/responses';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { LoginPage } from '../pages/login/login';
     PublierSondagePage,
     FirstTimePage,
     RegisterPage,
-    LoginPage
+    LoginPage,
+    ResponsesPage
   ],
   imports: [
     BrowserModule,
@@ -68,7 +70,8 @@ import { LoginPage } from '../pages/login/login';
     PublierSondagePage,
     FirstTimePage,
     RegisterPage,
-    LoginPage
+    LoginPage,
+    ResponsesPage
   ],
   providers: [
     StatusBar,

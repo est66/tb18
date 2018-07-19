@@ -23,7 +23,8 @@ interface Form {
 export class SondagePage {
 
  form:Form;
- utl:string;
+
+ 
 
   constructor(public navCtrl: NavController, private navParams: NavParams, private inAppBrowser: InAppBrowser, private alertCtrl: AlertController,) {
     this.form = navParams.get('form');  

@@ -53,6 +53,8 @@ export class PublierSondagePage {
   filterChoice: any;
   numberOfQuestion: number;
   wallet: Observable<Wallet>;
+  db:any;
+  formIdUrl:any;
 
 
   constructor(
@@ -68,7 +70,7 @@ export class PublierSondagePage {
     this.usersCollection = afs.collection('users');
     this.users = this.usersCollection.valueChanges();
     this.wallet = afs.doc<Wallet>('wallet/'+this.form.uid).valueChanges();
-
+    this.db = firebase.firestore();
     this.getNumberOfQuestion();
   }
   
@@ -140,40 +142,69 @@ export class PublierSondagePage {
 
 
   }
+
+  async createAndGetFormResponse(){
+    let formUrlAndId;
+    let formID = encodeURI(this.form.formId);
+    const url = "https://script.google.com/macros/s/AKfycbzDXRHKxLondFwWqL5ZB1JVdxZsY_tS5OsOs1v5/exec?";
+    const encoded = "formId=" + formID;
+    console.log(encoded);
+    await this.httpClient.get(url + encoded).map(res => res).subscribe(data => {
+    this.formIdUrl = data._body;
+    console.log(this.formIdUrl);
+
+    });
+  }
   async publier(){
 //prepare the query
-    var db = firebase.firestore();
+    
    
   let query;
     if (this.filterChoice == "aucun") {
-      query = db.collection('users').where('langues.' + this.filter.lang, '==', true);
+      query = this.db.collection('users').where('langues.' + this.filter.lang, '==', true);
     }
     if (this.filterChoice == "sexe") {
-      query = db.collection('users').where('sexe', '==', this.filter.sexe).where('langues.' + this.filter.lang, '==', true);
+      query = this.db.collection('users').where('sexe', '==', this.filter.sexe).where('langues.' + this.filter.lang, '==', true);
     }
     if (this.filterChoice == "age") {
-      query = db.collection('users').where('age', '>=', this.filter.ages.lower).where('age', '<=', this.filter.ages.upper).where('langues.' + this.filter.lang, '==', true);
+      query = this.db.collection('users').where('age', '>=', this.filter.ages.lower).where('age', '<=', this.filter.ages.upper).where('langues.' + this.filter.lang, '==', true);
     }
     if (this.filterChoice == "activity") {
-      query = db.collection('users').where('activity', '==', this.filter.activity).where('langues.' + this.filter.lang, '==', true);
+      query = this.db.collection('users').where('activity', '==', this.filter.activity).where('langues.' + this.filter.lang, '==', true);
     }
     //return the query
     let arrayOfUsers =
     await query.get()
       .then(function (querySnapshot) {
         let arrayU = [];
-        querySnapshot.forEach(function (doc) {
+        querySnapshot.forEach(function (doc) {           
           arrayU.push(doc.data().uid);
         });
        
         return arrayU;
       }).catch(function (error) {console.log("Error getting documents: ", error); });
-    console.log(arrayOfUsers);
+    //console.log(arrayOfUsers);
     //filter the query to remove the active user
     arrayOfUsers = arrayOfUsers.filter(userId => userId != this.form.uid);
     console.log(arrayOfUsers);
-    //share the form to every correponding user
+    //calculate rewards
+    let rewards ;
+    if (this.filterChoice == "aucun") rewards = this.numberOfQuestion * 0.2 * 100; else rewards = this.numberOfQuestion * 0.2 * 1.2 * 100
+    arrayOfUsers.forEach(uid=>{
+      let formResponseToAdd={
+        "id": this.form.formId + uid,
+        "uid":uid,
+        "userFormUid":this.form.uid,
+        "formId":this.form.formId,
+        "formTitle":this.form.title,
+        "nbQuestions": this.numberOfQuestion,
+        "rewards": rewards
+        }
+      this.db.collection("user_form_response").doc(this.form.formId + uid).set(formResponseToAdd);
+    })
     
+    //share the form to every correponding user
+
   }
 
 }

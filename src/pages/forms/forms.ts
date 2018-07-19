@@ -21,6 +21,17 @@ interface Form {
   publishedUrl?: string;
 
 }
+
+interface Response {
+  id?: string;
+  uid?: string;
+  userFormUid?: string;
+  formId?: string;
+  formTitle?: string;
+  nbQuestions?: number;
+  rewards?: number;
+
+}
 @Component({
   selector: 'page-forms',
   templateUrl: 'forms.html'
@@ -28,6 +39,8 @@ interface Form {
 export class FormsPage {
   formsCollection: AngularFirestoreCollection<Form>;
   forms: Observable<Form[]>;
+  responsesCollection: AngularFirestoreCollection<Response>;
+  responses: Observable<Response[]>;
   userId: any;
   userEmail: any;
   component: FormsPage;
