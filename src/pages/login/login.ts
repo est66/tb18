@@ -38,7 +38,6 @@ export class LoginPage {
     //private userAgent: UserAgent,
 
   ) {
-
     //FORM VALIDATOR
     //https://www.joshmorony.com/advanced-forms-validation-in-ionic-2/
     this.loginCredential = formBuilder.group({
@@ -46,10 +45,6 @@ export class LoginPage {
       password: ['', Validators.compose([Validators.required])]
     });
 
-  }
-
-  ionViewDidLoad() {
-  
   }
 
   //LOGIN DE L'UTILISATEUR AVEC EMAIL ET MOT DE PASSE

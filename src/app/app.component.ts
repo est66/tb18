@@ -7,7 +7,7 @@ import * as firebase from 'firebase/app';
 import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from '../pages/login/login';
 import { AuthProvider } from '../providers/auth/auth';
-import { AngularFireAuth } from 'angularfire2/auth';
+import { FormsPage } from '../pages/forms/forms';
 
 @Component({
   templateUrl: 'app.html'
@@ -15,7 +15,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = TabsPage;
+  rootPage: any = LoginPage;
 
   pages: Array<{title: string, component: any}>;
 
@@ -25,15 +25,14 @@ export class MyApp {
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
     public auth: AuthProvider,
-    private afAuth: AngularFireAuth
   ) {
 
     // User is redirected to the right page depend of its situation
     let unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       // If there's no user logged in send him to the LoginPage
-      if (user == null) this.rootPage = LoginPage;
+      if (user != null) this.rootPage = FormsPage; 
       // Else go to HomePage
-      else this.rootPage = TabsPage;
+      else this.rootPage = LoginPage;
     });
     this.initializeApp();
     

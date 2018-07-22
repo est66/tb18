@@ -3,9 +3,9 @@ import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 //firebase import
 import * as firebase from 'firebase/app';
-import { AngularFireAuthModule } from 'angularfire2/auth';
+
 import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFirestoreModule } from 'angularfire2/firestore';
+
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
@@ -16,22 +16,20 @@ import { User } from '../../models/user';
 //https://github.com/firebase/firebaseui-web/blob/master/README.md
 @Injectable()
 export class AuthProvider {
-  private userDoc: AngularFirestoreDocument<User>;
   user: Observable<User>;
   userCollection: AngularFirestoreCollection<User>;
   users: Observable<User[]>
   usersName: Observable<any[]>
- 
+  db: any;
 
 
-  constructor(http: Http,protected afAuth: AngularFireAuth, protected afs: AngularFirestore) {
+  constructor(http: Http, protected afAuth: AngularFireAuth, protected afs: AngularFirestore) {
     // Initialize Cloud Firestore through firebase
-    var db = firebase.firestore();
+    this.db = firebase.firestore();
     // Get Auth Data , then Get Firestore Document or null if doesn't exist
     this.user = this.afAuth.authState
       .switchMap(user => {
         if (user) {
-
           return this.afs.doc<User>(`users/${user.uid}`).valueChanges()
         }
         else { return Observable.of(null); }
@@ -52,7 +50,7 @@ export class AuthProvider {
     var userId;
     //try to insert new user
     try {
-      const result = await this.afAuth.auth.createUserWithEmailAndPassword(user.email, user.password);
+      const result = await this.afAuth.auth.createUserWithEmailAndPassword(user.email.trim(), user.password);
       console.log(result);
       userId = result.uid;
     } catch (e) {
@@ -62,6 +60,11 @@ export class AuthProvider {
     }
     //set user data to firestore on login
     user.uid = userId;
+    var docData = {
+      opicoins: 100,
+      uid: user.uid
+    };
+    this.db.collection("wallet").doc(user.uid).set(docData)
     const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
     const data: User = {
       uid: user.uid,
@@ -77,7 +80,6 @@ export class AuthProvider {
   //GOOGLE
   googleLogin() {
     const provider = new firebase.auth.GoogleAuthProvider();
-    const fvfv = new firebase.auth.EmailAuthProvider();
     return this.oAuthLogin(provider);
   }
 
@@ -94,7 +96,7 @@ export class AuthProvider {
     }
     return userRef.set(data, { merge: true });
 
-   // return userRef.set(data);
+    // return userRef.set(data);
   }
 
 
@@ -103,12 +105,11 @@ export class AuthProvider {
 
   loginEmailPassword(user: User) {
     //connexion
-    var email = user.email;
-    var password = user.password;
+    let email = user.email.trim();
+    let password = user.password;
 
     firebase.auth().signInWithEmailAndPassword(email, password).catch(function (error) {
       // Handle Errors here.
-      var errorCode = error.code;
       var errorMessage = error.message;
       alert(errorMessage);
       // ...

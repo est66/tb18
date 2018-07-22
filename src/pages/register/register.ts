@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { User } from '../../models/user';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AuthProvider } from '../../providers/auth/auth';
+import { LoginPage } from '../login/login';
+
 
 
 @Component({
@@ -11,14 +13,26 @@ import { AuthProvider } from '../../providers/auth/auth';
 })
 export class RegisterPage {
   user = {} as User;
+  LoginPage: any = LoginPage;
   constructor(
     private afauth: AngularFireAuth,
-    public navCtrl: NavController, 
+    public navCtrl: NavController,
     public navParams: NavParams,
-    public auth: AuthProvider) {
+    public auth: AuthProvider,
+    private alertCtrl: AlertController) {
+
   }
-  
-  register(user:User){
+
+  register(user: User) {
+    if (!user.email.trim().endsWith("@gmail.com")) {
+      let alert = this.alertCtrl.create({
+        title: 'Email invalide',
+        subTitle: user.email + " n'est pas une adresse Gmail valide ex: example@gmail.com",
+        buttons: ['ok']
+      });
+      return alert.present();
+    }
     this.auth.registerEmailPassword(user);
   }
+
 }

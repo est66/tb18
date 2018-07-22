@@ -28,32 +28,36 @@ export class ResponsesPage {
   db: any;
   responsesCollection: AngularFirestoreCollection<Response>;
   responses: Observable<Response[]>;
-  formIdUrl:any;
+  formIdUrl: any;
 
   constructor(
-    public navCtrl: NavController, 
-    public navParams: NavParams, 
-    private afs: AngularFirestore, 
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private afs: AngularFirestore,
     private inAppBrowser: InAppBrowser,
     public httpClient: Http
-    ) {
+  ) {
     var user = firebase.auth().currentUser;
     this.db = firebase.firestore();
-    this.responsesCollection = afs.collection<Response>('user_form_response', ref => ref.where('uid', '==', user.uid));
+    this.responsesCollection = afs.collection<Response>('user_form_response', ref => ref.where('uid', '==', user.uid).where('isCompleted', '==', false));
     this.responses = this.responsesCollection.valueChanges();
   }
 
-  async createAndGetFormResponse(formIds) {
-    let formID = encodeURI(formIds);
+  async createAndGetFormResponse(response) {
+    var user = firebase.auth().currentUser;
+    let userId = encodeURI(user.uid);
+    let formId = encodeURI(response.formId);
+    let userFormId = encodeURI(response.userFormUid);
     const url = "https://script.google.com/macros/s/AKfycbzDXRHKxLondFwWqL5ZB1JVdxZsY_tS5OsOs1v5/exec?";
-    const encoded = "formId=" + formID;
+    const encoded = "formId=" + formId + "&uid=" + userId + "&userFormId=" + userFormId;
     console.log(encoded);
-    await this.httpClient.get(url + encoded).map(res => res).subscribe(data => {
+    //save responseId to response
+    this.httpClient.get(url + encoded).map(res => res).subscribe(data => {
       this.formIdUrl = JSON.parse(data._body);
-      console.log (this.formIdUrl.url);
-      this.openWebPage(this.formIdUrl.url)
+      this.openWebPage(this.formIdUrl.url);
     });
-   
+
+
   }
 
   openWebPage(url) {
@@ -67,6 +71,6 @@ export class ResponsesPage {
     const browser = this.inAppBrowser.create(url, '_self', options);
     browser.show();
   }
-  
+
 
 }

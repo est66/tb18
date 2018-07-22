@@ -1,6 +1,6 @@
 <ion-content padding class="bg-style">
 
-    <div style="text-align:center;padding-top:30px;"><span style="font-family: Aressence; color:white; font-size:100px">Opikah</span></div>;
+    <div style="text-align:center;padding-top:30px;"><span style="font-family: fantasy; color:white; font-size:100px">Opikah</span></div>;
     <div id="ion-margin">
         <ion-item>
 
@@ -11,7 +11,9 @@
 
             <ion-input placeholder="Password" type="password" [(ngModel)]="user.password"></ion-input>
         </ion-item>
+        <p style="color:white"> *seul les comptes Gmail sont acceptés sur la plateforme</p>
         <br>
-        <button ion-button full (click)="register(user)" id="dark-button">Register</button>
+        <button ion-button  [navPush]="LoginPage" id="dark-button">Annuler</button>
+        <button ion-button  (click)="register(user)" id="dark-button" style="float:right">Créer un compte</button>
     </div>
 </ion-content>

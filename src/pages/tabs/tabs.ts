@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-
+import { NavController, NavParams } from 'ionic-angular';
 import { ProfilPage } from '../profil/profil';
 import { FormsPage } from '../forms/forms';
 import { HomePage } from '../home/home';
@@ -13,7 +13,8 @@ export class TabsPage {
   tab2Root = ProfilPage;
   tab3Root = FormsPage;
 
-  constructor() {
+  constructor(navCtrl: NavController) {
 
+    navCtrl.push(FormsPage);
   }
 }

@@ -53,27 +53,27 @@ export class PublierSondagePage {
   filterChoice: any;
   numberOfQuestion: number;
   wallet: Observable<Wallet>;
-  db:any;
-  formIdUrl:any;
+  db: any;
+  formIdUrl: any;
 
 
   constructor(
-    public navCtrl: NavController, 
-    public navParams: NavParams, 
+    public navCtrl: NavController,
+    public navParams: NavParams,
     private afs: AngularFirestore,
     public httpClient: Http
-    ) {
+  ) {
     // Initialize Cloud Firestore through Firebase
 
     this.form = navParams.get('form');
     this.filterChoice = "aucun";
     this.usersCollection = afs.collection('users');
     this.users = this.usersCollection.valueChanges();
-    this.wallet = afs.doc<Wallet>('wallet/'+this.form.uid).valueChanges();
+    this.wallet = afs.doc<Wallet>('wallet/' + this.form.uid).valueChanges();
     this.db = firebase.firestore();
     this.getNumberOfQuestion();
   }
-  
+
   //-----Tricks to hide and show tabs bars
   ionViewWillEnter() {
     let elements = document.querySelectorAll(".tabbar");
@@ -83,7 +83,7 @@ export class PublierSondagePage {
         elements[key].style.visibility = 'hidden';
       });
     }
-   
+
   }
 
 
@@ -111,7 +111,7 @@ export class PublierSondagePage {
   targetCount() {
     console.log(this.filter);
     if (this.filterChoice == "aucun") {
-      this.usersCollection = this.afs.collection('users', ref => ref  .where('langues.' + this.filter.lang, '==', true));
+      this.usersCollection = this.afs.collection('users', ref => ref.where('langues.' + this.filter.lang, '==', true));
     }
     if (this.filterChoice == "sexe") {
       this.usersCollection = this.afs.collection('users', ref => ref.where('sexe', '==', this.filter.sexe).where('langues.' + this.filter.lang, '==', true));
@@ -123,43 +123,32 @@ export class PublierSondagePage {
       this.usersCollection = this.afs.collection('users', ref => ref.where('activity', '==', this.filter.activity).where('langues.' + this.filter.lang, '==', true));
     }
 
-
-
+    //query is simplified for the proof of concept and to have enough user that can respond to the Google Forms
+    this.usersCollection = this.afs.collection('users');
     this.users = this.usersCollection.valueChanges();
   }
-//Get number of question using Apps Script --> Get all users and remove decorative ellements (title, description etc.)
-  async getNumberOfQuestion(){
+  //Get number of question using Apps Script --> Get all users and remove decorative ellements (title, description etc.)
+  async getNumberOfQuestion() {
     let formID = encodeURI(this.form.formId);
     const url = "https://script.google.com/macros/s/AKfycbxP5mgxhqjAwKZJYz8E1lXsknu5VKUJNVUB6NapUtwX0EPX4V36/exec?";
     const encoded = "formId=" + formID;
     console.log(encoded);
-    const response = await this.httpClient.get(url + encoded).map(res => res).subscribe(data => {    
+    const response = await this.httpClient.get(url + encoded).map(res => res).subscribe(data => {
       this.numberOfQuestion = data._body;
       console.log(this.numberOfQuestion);
-     
+
     });
     console.log(response);
 
 
   }
 
-  async createAndGetFormResponse(){
-    let formUrlAndId;
-    let formID = encodeURI(this.form.formId);
-    const url = "https://script.google.com/macros/s/AKfycbzDXRHKxLondFwWqL5ZB1JVdxZsY_tS5OsOs1v5/exec?";
-    const encoded = "formId=" + formID;
-    console.log(encoded);
-    await this.httpClient.get(url + encoded).map(res => res).subscribe(data => {
-    this.formIdUrl = data._body;
-    console.log(this.formIdUrl);
 
-    });
-  }
-  async publier(){
-//prepare the query
-    
-   
-  let query;
+  async publier() {
+    //prepare the query
+
+
+    let query;
     if (this.filterChoice == "aucun") {
       query = this.db.collection('users').where('langues.' + this.filter.lang, '==', true);
     }
@@ -173,38 +162,46 @@ export class PublierSondagePage {
       query = this.db.collection('users').where('activity', '==', this.filter.activity).where('langues.' + this.filter.lang, '==', true);
     }
     //return the query
+    //the query is simplified fot the proof of concept of application
+    query = this.db.collection('users');
     let arrayOfUsers =
-    await query.get()
-      .then(function (querySnapshot) {
-        let arrayU = [];
-        querySnapshot.forEach(function (doc) {           
-          arrayU.push(doc.data().uid);
-        });
-       
-        return arrayU;
-      }).catch(function (error) {console.log("Error getting documents: ", error); });
+      await query.get()
+        .then(function (querySnapshot) {
+          let arrayU = [];
+          querySnapshot.forEach(function (doc) {
+            arrayU.push(doc.data().uid);
+          });
+
+          return arrayU;
+        }).catch(function (error) { console.log("Error getting documents: ", error); });
     //console.log(arrayOfUsers);
     //filter the query to remove the active user
     arrayOfUsers = arrayOfUsers.filter(userId => userId != this.form.uid);
-    console.log(arrayOfUsers);
+    //console.log(arrayOfUsers);
     //calculate rewards
-    let rewards ;
+    let rewards;
     if (this.filterChoice == "aucun") rewards = this.numberOfQuestion * 0.2 * 100; else rewards = this.numberOfQuestion * 0.2 * 1.2 * 100
-    arrayOfUsers.forEach(uid=>{
-      let formResponseToAdd={
+
+
+    for (const uid of arrayOfUsers) {
+      let formResponseToAdd = {
         "id": this.form.formId + uid,
-        "uid":uid,
-        "userFormUid":this.form.uid,
-        "formId":this.form.formId,
-        "formTitle":this.form.title,
+        "uid": uid,
+        "userFormUid": this.form.uid,
+        "formId": this.form.formId,
+        "formTitle": this.form.title,
         "nbQuestions": this.numberOfQuestion,
-        "rewards": rewards
-        }
+        "rewards": rewards,
+        "isCompleted": false
+      }
       this.db.collection("user_form_response").doc(this.form.formId + uid).set(formResponseToAdd);
-    })
-    
+    }
+
+
     //share the form to every correponding user
 
   }
+
+
 
 }

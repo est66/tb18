@@ -22,15 +22,15 @@ interface Form {
 })
 export class SondagePage {
 
- form:Form;
+  form: Form;
 
- 
 
-  constructor(public navCtrl: NavController, private navParams: NavParams, private inAppBrowser: InAppBrowser, private alertCtrl: AlertController,) {
-    this.form = navParams.get('form');  
+
+  constructor(public navCtrl: NavController, private navParams: NavParams, private inAppBrowser: InAppBrowser, private alertCtrl: AlertController, ) {
+    this.form = navParams.get('form');
   }
   //-----Tricks to hide and show tabs bars
-  ionViewWillEnter(){
+  ionViewWillEnter() {
     let elements = document.querySelectorAll(".tabbar");
 
     if (elements != null) {
@@ -59,38 +59,38 @@ export class SondagePage {
     }
   }
 
-    //-----Tricks to hide and show tabs bars
+  //-----Tricks to hide and show tabs bars
 
-  openWebPage(url){
+  openWebPage(url) {
     const options: InAppBrowserOptions = {
       location: 'yes',
       toolbar: 'yes',
       zoom: 'no',
-      hardwareback:'yes',
+      hardwareback: 'yes',
 
     }
     const browser = this.inAppBrowser.create(url, '_self', options);
     browser.show();
   }
 
-  publier(form){
+  publier(form) {
     console.log(form);
-    this.navCtrl.push(PublierSondagePage,{form});
+    this.navCtrl.push(PublierSondagePage, { form });
 
   }
 
-  shareForms(){
+  shareForms() {
 
   }
 
-   deleteForms() {
+  deleteForms() {
     let formsIsDeleted = false;
     let alert = this.alertCtrl.create({
       title: 'Êtes-vous sûre de vouloir supprimer ce Google Forms ?',
       buttons: [
         {
           text: 'Non',
-       
+
           handler: data => {
             console.log('Canceled');
           }
@@ -99,23 +99,30 @@ export class SondagePage {
           text: 'Oui',
           handler: data => {
             var db = firebase.firestore();
-                      
-             db.collection("forms").doc(this.form.formId).delete().then(function () {
+
+            db.collection("forms").doc(this.form.formId).delete().then(function () {
               console.log("Document successfully deleted!");
-               
+
             }).catch(function (error) {
               console.error("Error removing document: ", error);
             });
-            
+
+            db.collection("user_form_response").doc(this.form.formId + this.form.uid).delete().then(function () {
+              console.log("Document successfully deleted!");
+
+            }).catch(function (error) {
+              console.error("Error removing document: ", error);
+            });
+
             this.navCtrl.pop();
           }
         }
       ]
     });
-   
-    
+
+
     alert.present();
-  
+
 
   }
 

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { AngularFirestore } from 'angularfire2/firestore';
+//import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs';
 
 
@@ -10,8 +10,8 @@ import { Observable } from 'rxjs';
 })
 export class HomePage {
   items: Observable<any[]>;
-  constructor(public navCtrl: NavController, db: AngularFirestore) {
-    this.items = db.collection('users').valueChanges();
+  constructor(public navCtrl: NavController) {
+    //this.items = db.collection('users').valueChanges();
   }
 
 }
