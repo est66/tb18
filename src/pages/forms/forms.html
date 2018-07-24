@@ -1,57 +1,76 @@
-
-
 <ion-content>
-      <ion-fab right bottom>
-        <button ion-fab color="primary" (click)="newForm()">
+  <ion-card>
+    <ion-grid style="font-size:0.8em">
+      <ion-row>
+        <ion-col class="primaryColor">
+          <ion-icon (click)="auth.logout()" class="padding" name="log-out" color="primary"></ion-icon>Déconnexion
+        </ion-col>
+        <ion-col class="opicoins" style="text-align:center">
+          Vos Opicoins
+          <br> {{(wallet | async)?.opicoins}}
+        </ion-col>
+        <ion-col>
+          {{user.email}}
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+
+  <ion-fab right bottom>
+    <button ion-fab color="primary" (click)="newForm()">
       <ion-icon name="add"></ion-icon>
     </button>
-    </ion-fab>
-<page-responses></page-responses>
-<ion-card>
-<ion-grid >
+  </ion-fab>
+  <page-responses></page-responses>
 
-  <ion-row class="title-tableau">
-    <ion-col col-3>
-      Date
-    </ion-col>
-    <ion-col col-5>
-      Titre
-    </ion-col>
-    <ion-col col-3>
-      Sondés
-    </ion-col>
 
-    <ion-col col-1>
-      <!-- Colonne des liens (icons) -->
+  <ion-card>
+    <ion-grid>
 
-    </ion-col>
-  </ion-row>
-  <div *ngFor="let form of forms | async">
-    <!-- DEBUT -->
-    <!-- LIGNE -->
-    <ion-row class="global-table">
-      <ion-col col-3>
-        {{form.date | date: 'dd/MM/yy'}}  
-      </ion-col>
-      
-      <ion-col col-5>  
-        {{form.title}}  
-      </ion-col>
-    
-      <ion-col col-3>
+      <ion-row class="title-tableau">
+        <ion-col col-3>
+          Date
+        </ion-col>
+        <ion-col col-4>
+          Titre
+        </ion-col>
+        <ion-col col-3>
+          Réponses
+        </ion-col>
+        <ion-col col-2>
+          Statut
+        </ion-col>
 
-      </ion-col>
+        <ion-col col-1>
+          <!-- Colonne des liens (icons) -->
+        </ion-col>
+      </ion-row>
+      <div *ngFor="let form of forms | async">
+        <!-- DEBUT -->
+        <!-- LIGNE -->
+        <ion-row class="global-table">
+          <ion-col col-3>
+            {{form.date | date: 'dd/MM/yy'}}
+          </ion-col>
 
-      <ion-col col-1>
-        <!--Basic: auto-select the icon based on the platform -->
-        <ion-icon name="exit" (click)="goToForm(form)"></ion-icon>
-      </ion-col>
-    </ion-row>
-    <!-- LIGNE -->
-  </div>
-</ion-grid>
-</ion-card>
-        <button ion-fab color="primary" (click)="auth.logout()">
-          <ion-icon atyle="padding:50px" name="exit"></ion-icon>
-        </button>
+          <ion-col col-4>
+            {{form.title}}
+          </ion-col>
+
+          <ion-col col-3>
+            {{form.responses || 0}}
+          </ion-col>
+          <ion-col col-1 *ngIf="form.published; else notPublished" class="published">P</ion-col>
+          <ng-template #notPublished>
+            <ion-col class="notPublished"> B </ion-col>
+          </ng-template>
+          <ion-col col-1>
+            <!--Basic: auto-select the icon based on the platform -->
+            <ion-icon name="exit" (click)="goToForm(form)"></ion-icon>
+          </ion-col>
+        </ion-row>
+        <!-- LIGNE -->
+      </div>
+    </ion-grid>
+  </ion-card>
 </ion-content>

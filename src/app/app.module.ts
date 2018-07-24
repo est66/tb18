@@ -31,6 +31,7 @@ import { UserProvider } from '../providers/user/user';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { LoginPage } from '../pages/login/login';
 import { ResponsesPage } from '../pages/responses/responses';
+import { TransitionPage } from '../pages/transition/transition';
 
 
 @NgModule({
@@ -46,7 +47,8 @@ import { ResponsesPage } from '../pages/responses/responses';
     FirstTimePage,
     RegisterPage,
     LoginPage,
-    ResponsesPage
+    ResponsesPage,
+    TransitionPage
   ],
   imports: [
     BrowserModule,
@@ -71,7 +73,8 @@ import { ResponsesPage } from '../pages/responses/responses';
     FirstTimePage,
     RegisterPage,
     LoginPage,
-    ResponsesPage
+    ResponsesPage,
+    TransitionPage
   ],
   providers: [
     StatusBar,

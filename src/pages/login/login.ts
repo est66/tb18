@@ -41,7 +41,7 @@ export class LoginPage {
     //FORM VALIDATOR
     //https://www.joshmorony.com/advanced-forms-validation-in-ionic-2/
     this.loginCredential = formBuilder.group({
-      email: ['', Validators.compose([Validators.email, Validators.required])],
+      email: ['', Validators.compose([Validators.required])],
       password: ['', Validators.compose([Validators.required])]
     });
 

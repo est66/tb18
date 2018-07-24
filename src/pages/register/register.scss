@@ -1,26 +1,34 @@
 page-register {
-    .bg-style {
-        background:  color($colors,primary);
+  .bg-style {
+    background: color($colors, primary) !important;
+  }
+  #dark-button {
+    background: #616161;
+  }
+  #ion-margin {
+    margin: 10%;
+  }
+  .register {
+    color: white;
+    span {
+      text-decoration: underline;
     }
-    #dark-button {
-        background: #616161;
+  }
+  form {
+    ion-item {
+      background: black;
+      color: white;
     }
-    #ion-margin {
-        margin: 10%;
-    }
-    .register {
-        color: white;
-        span {
-            text-decoration: underline;
-        }
-    }
-    form {
-        ion-item {
-            background: black;
-            color: white;
-        }
-    }
-    .toolbar-md-primary .toolbar-background-md {
-        background: #222!important;
-    }
+  }
+  .toolbar-md-primary .toolbar-background-md {
+    background: #222 !important;
+  }
+  .button-round-md {
+    background: color($colors, primary);
+    color: white;
+    border: solid 3px white;
+    border-radius: 0px;
+    height: 50px;
+    font-size: 0.9em;
+  }
 }

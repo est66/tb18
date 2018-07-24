@@ -3,12 +3,14 @@ import { NavController, NavParams } from 'ionic-angular';
 
 import { AlertController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
-import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
-import firebase from 'firebase/app';  
+import { AngularFirestoreCollection, AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
+import firebase from 'firebase/app';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map'
 import { SondagePage } from '../sondage/sondage';
 import { AuthProvider } from '../../providers/auth/auth';
+import { async } from '../../../node_modules/@firebase/util';
+import { User } from '../../models/user';
 
 interface Form {
   date?: Date;
@@ -19,6 +21,12 @@ interface Form {
   statut?: string;
   editUrl?: string;
   publishedUrl?: string;
+  responses?: number;
+
+}
+
+interface Wallet {
+  opicoins?: any;
 
 }
 
@@ -42,28 +50,36 @@ export class FormsPage {
   responsesCollection: AngularFirestoreCollection<Response>;
   responses: Observable<Response[]>;
   component: FormsPage;
+  db: any;
+  wallet: Observable<Wallet>
+  walletDoc: AngularFirestoreDocument<Wallet>;
+  user: User;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private alertCtrl: AlertController,
-    private auth:AuthProvider,
+    private auth: AuthProvider,
     private afs: AngularFirestore,
     public httpClient: Http
-    ) {
-      
- 
+  ) {
 
-
+    this.db = firebase.firestore();
+    this.user = firebase.auth().currentUser;
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad SondagesPage');
-    let user = firebase.auth().currentUser;
-    this.formsCollection = this.afs.collection<Form>('forms', ref => ref.where('uid', '==', user.uid ));
-    this.forms = this.formsCollection.valueChanges();
-  }
+    //console.log('ionViewDidLoad SondagesPage');
 
+    this.formsCollection = this.afs.collection<Form>('forms', ref => ref.where('uid', '==', this.user.uid));
+    this.forms = this.formsCollection.valueChanges();
+
+    this.walletDoc = this.afs.doc<Wallet>('wallet/' + this.user.uid);
+    this.wallet = this.walletDoc.valueChanges();
+
+    //this.wallet = this.afs.doc<Wallet>('wallet/' + user.uid).valueChanges();
+
+  }
   newForm() {
 
     let alert = this.alertCtrl.create({
@@ -79,7 +95,7 @@ export class FormsPage {
           text: 'Annuler',
           role: 'Annuler',
           handler: data => {
-            console.log('Canceled');
+
           }
         },
         {
@@ -97,14 +113,12 @@ export class FormsPage {
             const url = "https://script.google.com/macros/s/AKfycby2tmnvvrN_sEjU2HMw72XKKHSs0qCiCI-blIMvhGf78LG6e9I/exec?";
             const encoded = "uid=" + userId + "&email=" + userEmail + "&title=" + data.formName;
             //const encoded = encodeURIComponent("uid="+this.userId+"&title="+data.formName+"&email"+this.userEmail);
-            console.log(encoded);
+            // console.log(encoded);
 
             const response = this.httpClient.get(url + encoded).map(res => res).subscribe(data => {
-              console.log(data);
-            });
-            console.log(response);
 
-            console.log(data);
+            });
+
           }
         }
       ]
@@ -112,7 +126,7 @@ export class FormsPage {
     alert.present();
   }
   goToForm(form) {
-    console.log(form);
+    //console.log(form);
     this.navCtrl.push(SondagePage, { form });
 
   }

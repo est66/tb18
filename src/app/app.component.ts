@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, MenuController } from 'ionic-angular';
+import { Nav, Platform, MenuController, Transition } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import * as firebase from 'firebase/app';
@@ -8,6 +8,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from '../pages/login/login';
 import { AuthProvider } from '../providers/auth/auth';
 import { FormsPage } from '../pages/forms/forms';
+import { TransitionPage } from '../pages/transition/transition';
 
 @Component({
   templateUrl: 'app.html'
@@ -15,7 +16,7 @@ import { FormsPage } from '../pages/forms/forms';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = LoginPage;
+  rootPage: any = TransitionPage;
 
   pages: Array<{title: string, component: any}>;
 

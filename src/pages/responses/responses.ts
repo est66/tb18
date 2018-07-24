@@ -39,7 +39,7 @@ export class ResponsesPage {
   ) {
     var user = firebase.auth().currentUser;
     this.db = firebase.firestore();
-    this.responsesCollection = afs.collection<Response>('user_form_response', ref => ref.where('uid', '==', user.uid).where('isCompleted', '==', false));
+    this.responsesCollection = afs.collection<Response>('user_form_response', ref => ref.where('uid', '==', user.uid).where('isCompleted', '==', false).where('published', '==', true));
     this.responses = this.responsesCollection.valueChanges();
   }
 

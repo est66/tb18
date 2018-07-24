@@ -14,6 +14,7 @@ interface Form {
   statut?: string;
   editUrl?: string;
   publishedUrl?: string;
+  published:boolean
 
 }
 @Component({
@@ -23,11 +24,13 @@ interface Form {
 export class SondagePage {
 
   form: Form;
+  db: any;
 
-
+  
 
   constructor(public navCtrl: NavController, private navParams: NavParams, private inAppBrowser: InAppBrowser, private alertCtrl: AlertController, ) {
     this.form = navParams.get('form');
+    this.db = firebase.firestore();
   }
   //-----Tricks to hide and show tabs bars
   ionViewWillEnter() {
@@ -119,9 +122,33 @@ export class SondagePage {
         }
       ]
     });
-
-
     alert.present();
+  }
+
+  async brouillon() {
+    if(!this.form.published) return;
+    let users = this.db.collection('users');
+    let arrayOfUsers =
+      await users.get()
+        .then(function (querySnapshot) {
+          let arrayU = [];
+          querySnapshot.forEach(function (doc) {
+            arrayU.push(doc.data().uid);
+          });
+          return arrayU;
+        }).catch(function (error) { console.log("Error getting documents: ", error); });
+    arrayOfUsers = arrayOfUsers.filter(userId => userId != this.form.uid);
+    for (const uid of arrayOfUsers) {
+      let formsPublished = {
+        "published": false
+      }
+      this.db.collection("user_form_response").doc(this.form.formId + uid).update(formsPublished);
+    }
+    let formsPublished = {
+      "published": false
+    }
+    this.db.collection("forms").doc(this.form.formId).update(formsPublished);
+    this.form.published = false;
 
 
   }

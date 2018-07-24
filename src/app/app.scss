@@ -16,7 +16,13 @@
 // automatically applied to the <body> element in the app.
 .opicoins{color:#ffa100;font-size:1.2em}
 @font-face {
-font-family: Aressence;
-src: url(../assets/fonts/ARESSENCE.ttf) format("ttf");
-font-weight: 200
+  font-family: 'Aressence';
+  src: url('assets/fonts/ARESSENCE.ttf');
+}
+
+.primaryColor{
+    color:#f53d3d,
+}
+ion-content{
+    background:rgb(245, 245, 245) !important;
 }

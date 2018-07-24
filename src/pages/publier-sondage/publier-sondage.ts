@@ -15,6 +15,7 @@ interface Form {
   statut?: string;
   editUrl?: string;
   publishedUrl?: string;
+  published: boolean
 
 }
 interface Filter {
@@ -88,7 +89,7 @@ export class PublierSondagePage {
 
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad PublierSondagePage');
+    //console.log('ionViewDidLoad PublierSondagePage');
     let elements = document.querySelectorAll(".tabbar");
 
     if (elements != null) {
@@ -109,7 +110,7 @@ export class PublierSondagePage {
   //-----Tricks to hide and show tabs bars
 
   targetCount() {
-    console.log(this.filter);
+    //console.log(this.filter);
     if (this.filterChoice == "aucun") {
       this.usersCollection = this.afs.collection('users', ref => ref.where('langues.' + this.filter.lang, '==', true));
     }
@@ -132,13 +133,13 @@ export class PublierSondagePage {
     let formID = encodeURI(this.form.formId);
     const url = "https://script.google.com/macros/s/AKfycbxP5mgxhqjAwKZJYz8E1lXsknu5VKUJNVUB6NapUtwX0EPX4V36/exec?";
     const encoded = "formId=" + formID;
-    console.log(encoded);
+    //console.log(encoded);
     const response = await this.httpClient.get(url + encoded).map(res => res).subscribe(data => {
       this.numberOfQuestion = data._body;
-      console.log(this.numberOfQuestion);
+     // console.log(this.numberOfQuestion);
 
     });
-    console.log(response);
+   // console.log(response);
 
 
   }
@@ -146,8 +147,6 @@ export class PublierSondagePage {
 
   async publier() {
     //prepare the query
-
-
     let query;
     if (this.filterChoice == "aucun") {
       query = this.db.collection('users').where('langues.' + this.filter.lang, '==', true);
@@ -192,16 +191,19 @@ export class PublierSondagePage {
         "formTitle": this.form.title,
         "nbQuestions": this.numberOfQuestion,
         "rewards": rewards,
-        "isCompleted": false
+        "isCompleted": false,
+        "published": true
       }
       this.db.collection("user_form_response").doc(this.form.formId + uid).set(formResponseToAdd);
     }
+    let formsPublished = {
+      "published": true
+    }
+    this.db.collection("forms").doc(this.form.formId).update(formsPublished);
 
-
+    this.form.published = true;
     //share the form to every correponding user
 
   }
-
-
 
 }
