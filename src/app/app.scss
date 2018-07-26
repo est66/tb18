@@ -1,6 +1,4 @@
 // http://ionicframework.com/docs/theming/
-
-
 // App Global Sass
 // --------------------------------------------------
 // Put style rules here that you want to apply globally. These
@@ -14,15 +12,20 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
-.opicoins{color:#ffa100;font-size:1.2em}
+.opicoins {
+  color: #ffa100;
+  font-size: 1.2em
+}
+
 @font-face {
   font-family: 'Aressence';
   src: url('assets/fonts/ARESSENCE.ttf');
 }
 
-.primaryColor{
-    color:#f53d3d,
+.primaryColor {
+  color: #f53d3d,
 }
-ion-content{
-    background:rgb(245, 245, 245) !important;
+
+ion-content {
+  background: rgb(245, 245, 245) !important;
 }

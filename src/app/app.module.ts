@@ -5,13 +5,9 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
 import { SondagePage } from '../pages/sondage/sondage';
 //pages
-import { ProfilPage } from '../pages/profil/profil';
 import { FormsPage } from '../pages/forms/forms';
-import { TabsPage } from '../pages/tabs/tabs';
 import { PublierSondagePage } from '../pages/publier-sondage/publier-sondage';
 import { RegisterPage } from '../pages/register/register';
 import { FirstTimePage } from '../pages/first-time/first-time';
@@ -37,11 +33,7 @@ import { TransitionPage } from '../pages/transition/transition';
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
-    ListPage,
-    ProfilPage,
     FormsPage,
-    TabsPage,
     SondagePage,
     PublierSondagePage,
     FirstTimePage,
@@ -63,11 +55,7 @@ import { TransitionPage } from '../pages/transition/transition';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage,
-    ListPage,
-    ProfilPage,
     FormsPage,
-    TabsPage,
     SondagePage,
     PublierSondagePage,
     FirstTimePage,

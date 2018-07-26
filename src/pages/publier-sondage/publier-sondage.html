@@ -17,6 +17,28 @@
     -->
 
   <ion-grid>
+    <!--CALCULE DU PRIX-->
+    <ion-row padding>
+      <ion-col>
+        <h4>Mon Sondage</h4>
+      </ion-col>
+      <ion-col>
+        <!--CALCULE DU PRIX -->
+        <div *ngIf="filterChoice == 'aucun'; else priceWithFilter">
+<h4 style="float:right">{{ numberOfQuestion*0.2*100 | number:0|| 0}}
+            <img class="opicoins-img" src="assets/imgs/opicoins.png" alt="Opicoins">/
+            <ion-icon name="contact" color="primary"></ion-icon>
+          </h4>
+        </div>
+        <ng-template #priceWithFilter>
+          <!--CALCULE DU PRIX SELON LA FORMULE DU RAPPORT (NOMBRE DE QUESTION & NOMBRE DE FILTRE-->
+          <h4 style="float:right">{{ numberOfQuestion*0.2*1.2*100 || 0}}
+            <img class="opicoins-img" src="assets/imgs/opicoins.png" alt="Opicoins">/
+            <ion-icon name="contact" color="primary"></ion-icon>
+          </h4>
+        </ng-template>
+      </ion-col>
+    </ion-row>
     <!--LOCALISATION-->
     <!--PAYS-->
     <div class="separateur-categorie">Localisation</div>
@@ -143,36 +165,17 @@
     <ion-row>
       <ion-col>
         <ion-list>
-          <ion-item>
-            <h3>NOMBRE MAX DE RÉPONSE </h3>
-            <h3>{{ (users | async)?.length }}</h3>
+          <ion-item style="text-align:center">
+            <h2>Nombre de réponse potentiel </h2>
+            <br>
+            <h2>{{ (users | async)?.length }}</h2>
             <!--<div *ngFor="let user of users | async"><p>{{ user.uid }}</p></div>-->
           </ion-item>
         </ion-list>
       </ion-col>
 
     </ion-row>
-    <!--CALCULE DU PRIX-->
-    <ion-row>
-      <ion-card>
-        <ion-card-content>
-          <h1>PRIX</h1>
-          <br>
-          <!--CALCULE DU PRIX -->
-          <div *ngIf="filterChoice == 'aucun'; else priceWithFilter">
 
-            <h2>{{ numberOfQuestion*0.2*100}}
-              <span class="opicoins">Opicoins</span>/réponse</h2>
-          </div>
-          <ng-template #priceWithFilter>
-            <!--CALCULE DU PRIX SELON LA FORMULE DU RAPPORT (NOMBRE DE QUESTION & NOMBRE DE FILTRE-->
-            <h2>{{ numberOfQuestion*0.2*1.2*100}}
-              <span class="opicoins">Opicoins</span>/réponse</h2>
-          </ng-template>
-
-        </ion-card-content>
-      </ion-card>
-    </ion-row>
     <ion-row *ngIf="(wallet | async)?.opicoins > 50; else notEnoughToShare">
       <ion-col>
         <button ion-button block (click)="publier()">Publier</button>
@@ -182,13 +185,13 @@
       <ion-row>
         <ion-col>
           Vou devez avoir plus de
-          <span class ="opicoins"> 50 Opicoins </span>pour partager des sondages
+          <span class="opicoins"> 50 Opicoins </span>pour partager des sondages
         </ion-col>
       </ion-row>
     </ng-template>
     <ion-row>
       <ion-col>
-        vous disposez de {{ (wallet | async)?.opicoins }} opicoins
+        vous disposez de {{ (wallet | async )?.opicoins || 0}} opicoins
       </ion-col>
     </ion-row>
   </ion-grid>

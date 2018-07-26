@@ -12,8 +12,7 @@ import { RegisterPage } from '../../pages/register/register';
 import * as firebase from 'firebase/app';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-//import { GooglePlus } from '@ionic-native/google-plus';
-import { HomePage } from '../home/home';
+import { FormsPage } from '../forms/forms';
 
 
 
@@ -26,7 +25,7 @@ import { HomePage } from '../home/home';
 export class LoginPage {
   user = {} as User;
   RegisterPage: any = RegisterPage;
-  HomePage: any = HomePage;
+  FormsPage: any = FormsPage;
   loginCredential: FormGroup;
   constructor(
     private afAuth: AngularFireAuth,
@@ -52,7 +51,7 @@ export class LoginPage {
     //validation du formulaire
     if (!this.loginCredential.valid) { alert("Email or password error"); return null; }
     //connexion
-    if (this.auth.loginEmailPassword(user)) this.navCtrl.setRoot(HomePage);
+    if (this.auth.loginEmailPassword(user)) this.navCtrl.setRoot(FormsPage);
 
   }
   //REDIRECTION VERS LA PAGE DE CRéATION DE COMPTE

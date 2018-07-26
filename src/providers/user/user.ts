@@ -49,15 +49,16 @@ export class UserProvider extends AuthProvider {
     // Get Auth Data , then Get Firestore Document or null if doesn't exist
     // Get the data
     var usersRef = db.collection("users");
-    console.log("Prepare for update ...");
     //set user data to firestore
     const userId = firebase.auth().currentUser.uid;
     const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${userId}`);
+    console.log(user);
     const data: User = {
       prenom: user.prenom,
       nom: user.nom,
-      naissance: user.naissance,
+      age: user.age,
       sexe: user.sexe,
+      activity:user.activity,
       //CONTACT
       rue: user.rue,
       rueNo: user.rueNo,

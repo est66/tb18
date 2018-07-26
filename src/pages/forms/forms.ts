@@ -11,19 +11,10 @@ import { SondagePage } from '../sondage/sondage';
 import { AuthProvider } from '../../providers/auth/auth';
 import { async } from '../../../node_modules/@firebase/util';
 import { User } from '../../models/user';
+import { Form } from '../../models/form';
+import { FirstTimePage } from '../first-time/first-time';
 
-interface Form {
-  date?: Date;
-  formId?: string;
-  uid?: any;
-  editor?: string;
-  title?: string;
-  statut?: string;
-  editUrl?: string;
-  publishedUrl?: string;
-  responses?: number;
 
-}
 
 interface Wallet {
   opicoins?: any;
@@ -78,6 +69,30 @@ export class FormsPage {
     this.wallet = this.walletDoc.valueChanges();
 
     //this.wallet = this.afs.doc<Wallet>('wallet/' + user.uid).valueChanges();
+    //IF USER IS CONNECTED FOR THE FIRST TIME --> REDIRECTED TO FIRSTIME PAGE
+    /*
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        let userDoc = this.afs.doc(`users/${user.uid}`);
+        userDoc.valueChanges().subscribe(data => {
+          let userData:User = data;
+          if (data == null) { this.auth.updateUserData(user); return this.navCtrl.setRoot(FirstTimePage); }
+          if (
+            !userData.prenom ||
+            !userData.nom ||
+            !userData.naissance ||
+            !userData.sexe ||
+            !userData.rue ||
+            !userData.rueNo ||
+            !userData.npa ||
+            !userData.ville ||
+            !userData.canton ||
+            !userData.telephone ||
+            !userData.naissance
+          ) this.navCtrl.setRoot(FirstTimePage);
+        });
+      }
+    })*/
 
   }
   newForm() {

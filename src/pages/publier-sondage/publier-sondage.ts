@@ -5,19 +5,9 @@ import { Observable } from 'rxjs/Observable';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { Http } from '@angular/http';
 import * as firebase from 'firebase/app';
+import { Form } from '../../models/form';
 
-interface Form {
-  date?: Date;
-  formId?: string;
-  uid?: any;
-  editor?: string;
-  title?: string;
-  statut?: string;
-  editUrl?: string;
-  publishedUrl?: string;
-  published: boolean
 
-}
 interface Filter {
   country?: string;
   sexe?: string;
@@ -136,6 +126,7 @@ export class PublierSondagePage {
     //console.log(encoded);
     const response = await this.httpClient.get(url + encoded).map(res => res).subscribe(data => {
       this.numberOfQuestion = data._body;
+      
      // console.log(this.numberOfQuestion);
 
     });
@@ -181,7 +172,7 @@ export class PublierSondagePage {
     let rewards;
     if (this.filterChoice == "aucun") rewards = this.numberOfQuestion * 0.2 * 100; else rewards = this.numberOfQuestion * 0.2 * 1.2 * 100
 
-
+    rewards = Math.round(rewards)
     for (const uid of arrayOfUsers) {
       let formResponseToAdd = {
         "id": this.form.formId + uid,

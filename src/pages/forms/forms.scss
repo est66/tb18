@@ -9,5 +9,32 @@ page-forms {
   .notPublished {
     color: tomato;
   }
-  .padding{padding: 5px;}
+  .padding {
+    padding: 5px;
+  }
+  .header {
+    border-bottom: solid 3px color($colors, primary);
+    background: white;
+    ion-col{
+        padding: 0px;
+    }
+  }
+  .header-deconnexion {
+    font-size: 0.8em;
+    ion-icon {
+        font-size: 1.3em;
+    }
+  }
+  .header-email {
+    text-align: right;
+    font-size: 0.9em;
+  }
+  .header-opicoins {
+    font-size: 1.3em;
+    font-weight: bold;
+   
+    .opicoins-color {
+      color: #ffa100;
+    }
+  }
 }

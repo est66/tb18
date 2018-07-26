@@ -1,20 +1,28 @@
-<ion-content>
-  <ion-card>
+<ion-header class="header">
+  <ion-navbar>
     <ion-grid style="font-size:0.8em">
       <ion-row>
-        <ion-col class="primaryColor">
+        <ion-col col-3 class="primaryColor header-deconnexion">
           <ion-icon (click)="auth.logout()" class="padding" name="log-out" color="primary"></ion-icon>Déconnexion
         </ion-col>
-        <ion-col class="opicoins" style="text-align:center">
-          Vos Opicoins
-          <br> {{(wallet | async)?.opicoins}}
+        <ion-col col-5 class="header-opicoins" style="text-align:center">
+          Vous avez
+          <span class="opicoins-color">{{(wallet | async)?.opicoins||0}} </span>
+          <img height="15px" src="assets/imgs/opicoins.png" alt="Opicoins">
         </ion-col>
-        <ion-col>
+        <ion-col col-4 class="header-email">
+          <!--.replace("@gmail.com", "")-->
           {{user.email}}
         </ion-col>
       </ion-row>
     </ion-grid>
-  </ion-card>
+  </ion-navbar>
+
+
+</ion-header>
+
+<ion-content>
+
 
   <ion-fab right bottom>
     <button ion-fab color="primary" (click)="newForm()">
