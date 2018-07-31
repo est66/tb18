@@ -6,7 +6,11 @@ import { AngularFirestoreDocument, AngularFirestore } from 'angularfire2/firesto
 import { UserProvider } from '../../providers/user/user';
 import { AuthProvider } from '../../providers/auth/auth';
 import { FormsPage } from '../forms/forms';
-
+/**
+ * Cette page permet d'entrer les informations utilisateurs lors de la
+ * première connexion sur l'application.
+ * Cette page ne fait pas partie du prototype car elle contient des bugs
+ */
 
 @Component({
   selector: 'page-first-time',

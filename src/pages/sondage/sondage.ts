@@ -4,6 +4,14 @@ import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser'
 import { PublierSondagePage } from '../publier-sondage/publier-sondage';
 import * as firebase from 'firebase/app';
 
+/**
+ * Cette page donne un aperçu du sondage et permet aux utilisateurs de consulter, 
+ * modifier supprimer, publier ou stopper le partage de leur Google Forms. 
+ * Les boutons de modification et d’aperçu redirigent les utilisateurs vers les 
+ * formulaires Google Forms.
+
+ */
+
 
 interface Form {
   date?: Date;

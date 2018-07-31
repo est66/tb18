@@ -5,7 +5,11 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AuthProvider } from '../../providers/auth/auth';
 import { LoginPage } from '../login/login';
 
+/**
+ * Cette page permet aux utilisateurs de créer un compte. 
+ * Seuls les utilisateurs Gmail peuvent créer un compte.
 
+ */
 
 @Component({
   selector: 'page-register',

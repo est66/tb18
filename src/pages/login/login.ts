@@ -14,7 +14,11 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormsPage } from '../forms/forms';
 
-
+/**
+ * La page de Login permet aux utilisateurs de se connecter à l'application 
+ * rediriger l'utilisateur vers la page qui permet aux utilisateurs 
+ * se créer un compte (Register).
+ */
 
 
 @Component({

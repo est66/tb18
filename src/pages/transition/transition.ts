@@ -2,10 +2,7 @@ import { Component } from '@angular/core';
 import { LoadingController  } from 'ionic-angular';
 
 /**
- * Generated class for the TransitionPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
+ * Cette page s'affiche lorsque les pages se chargent
  */
 
 @Component({

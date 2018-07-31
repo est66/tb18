@@ -6,6 +6,11 @@ import * as firebase from 'firebase/app';
 import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser';
 import { Http } from '@angular/http';
 
+/**
+ * Cette page est un composant qui affiche les réponses auquels 
+ * l'utilisateur peuvent répondre sur la page d'accueil
+ */
+
 interface Response {
   id?: string;
   uid?: string;

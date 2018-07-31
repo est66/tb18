@@ -7,6 +7,13 @@ import { Http } from '@angular/http';
 import * as firebase from 'firebase/app';
 import { Form } from '../../models/form';
 
+/**
+ * Cette page permet aux utilisateurs de partager leur sondage en choisissant 
+ * le pays et la langue puis en choisissant un filtre de leur choix. 
+ * Les filtres ne sont pas fonctionnels afin de garantir un nombre suffisant 
+ * d’utilisateur répondant aux questions.
+
+ */
 
 interface Filter {
   country?: string;

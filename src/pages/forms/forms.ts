@@ -13,7 +13,14 @@ import { async } from '../../../node_modules/@firebase/util';
 import { User } from '../../models/user';
 import { Form } from '../../models/form';
 import { FirstTimePage } from '../first-time/first-time';
-
+/**
+ * Cette page est la page d'accueil de l'application
+ * La page d’accueil donne des informations sur le compte utilisateur. 
+ * Les utilisateurs peuvent consulter et répondre aux questionnaires 
+ * des entreprises et accéder à leurs formulaires en cliquant 
+ * sur l’icône à droite du tableau.
+ * Les réponses font l'objet d'une page dédiée nomée Responses
+ */
 
 
 interface Wallet {
